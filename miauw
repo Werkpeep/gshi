@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Click the Button Game!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fdf6e3;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 40px;
+    }
+    #gameBox {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px #ccc;
+      display: inline-block;
+      margin-top: 40px;
+      padding: 30px 50px;
+    }
+    #clickBtn {
+      font-size: 1.5em;
+      padding: 20px 40px;
+      margin: 25px;
+      background: #21ce99;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #clickBtn:active {
+      background: #15a375;
+    }
+    #score, #timer {
+      font-size: 1.2em;
+      margin: 12px 0;
+    }
+    #restartBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 1em;
+      background: #ff9800;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Click the Button Game!</h1>
+  <div id="gameBox">
+    <div id="timer">Time: <span id="timeLeft">10</span>s</div>
+    <div id="score">Score: <span id="scoreCount">0</span></div>
+    <button id="clickBtn">Click Me!</button>
+    <br>
+    <button id="restartBtn">Restart</button>
+    <div id="endMsg" style="margin-top:16px;font-size:1.1em;font-weight:bold;"></div>
+  </div>
+  <script>
+    let time = 10;
+    let score = 0;
+    let timeInterval = null;
+    let playing = false;
+    const timeLeft = document.getElementById('timeLeft');
+    const scoreCount = document.getElementById('scoreCount');
+    const clickBtn = document.getElementById('clickBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const endMsg = document.getElementById('endMsg');
+
+    function startGame() {
+      score = 0;
+      time = 10;
+      playing = true;
+      scoreCount.textContent = score;
+      timeLeft.textContent = time;
+      endMsg.textContent = '';
+      clickBtn.disabled = false;
+      restartBtn.style.display = 'none';
+
+      timeInterval = setInterval(() => {
+        time--;
+        timeLeft.textContent = time;
+        if (time <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      clearInterval(timeInterval);
+      playing = false;
+      clickBtn.disabled = true;
+      endMsg.textContent = `Time's up! Your score is ${score}.`;
+      restartBtn.style.display = 'inline-block';
+    }
+
+    clickBtn.addEventListener('click', function () {
+      if (!playing) {
+        startGame();
+      }
+      if (playing) {
+        score++;
+        scoreCount.textContent = score;
+      }
+    });
+
+    restartBtn.addEventListener('click', function () {
+      startGame();
+    });
+
+    // Initial State
+    clickBtn.disabled = false;
+    endMsg.textContent = 'Click "Click Me!" to start!';
+  </script>
+</body>
+</html>
